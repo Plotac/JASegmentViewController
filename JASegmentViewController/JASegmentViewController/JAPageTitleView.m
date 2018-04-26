@@ -25,9 +25,6 @@ static CGFloat const kScrollLineH = 2;
 //当前索引
 @property (nonatomic,assign) NSInteger currentIndex;
 
-//主要的滚动视图
-@property (nonatomic,strong) UIScrollView *scrollView;
-
 //滚动的选中条
 @property (nonatomic,strong) UIView *scrollLine;
 
@@ -169,7 +166,7 @@ static CGFloat const kScrollLineH = 2;
     _currentIndex = targetIndex;
 }
 
-#pragma mark - Setter
+#pragma mark - Setter & Getter
 - (void)setLabelWidth:(CGFloat)labelWidth {
     _labelWidth = labelWidth;
     if (_labelWidth * self.titles.count > self.frame.size.width) {//大于自身的宽度时，可以滑动
@@ -198,6 +195,10 @@ static CGFloat const kScrollLineH = 2;
     _selectIndex = selectIndex;
     
     [self labelClick:nil];
+}
+
+- (NSArray*)titleArray {
+    return self.titles;
 }
 
 #pragma mark - Private

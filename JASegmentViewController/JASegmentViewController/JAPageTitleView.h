@@ -19,6 +19,12 @@
 
 @interface JAPageTitleView : UIView
 
+//主要的滚动视图
+@property (nonatomic,strong) UIScrollView *scrollView;
+
+//标题数组
+@property (nonatomic,strong,readonly) NSArray *titleArray;
+
 //label的宽度
 @property (nonatomic,assign) CGFloat labelWidth;
 
