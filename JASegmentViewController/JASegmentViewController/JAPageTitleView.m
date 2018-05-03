@@ -22,9 +22,6 @@ static CGFloat const kScrollLineH = 2;
 //标题字体
 @property (nonatomic,strong) UIFont *titleFont;
 
-//当前索引
-@property (nonatomic,assign) NSInteger currentIndex;
-
 //滚动的选中条
 @property (nonatomic,strong) UIView *scrollLine;
 
@@ -39,7 +36,7 @@ static CGFloat const kScrollLineH = 2;
 @implementation JAPageTitleView
 
 #pragma mark - 初始化方法 & UI
-- (instancetype)initWithFrame:(CGRect)frame titles:(NSArray<NSString*>*)titles needBottomLine:(BOOL)needBottomLine delegate:(id<JAPageTitleViewDelegate>)delegate {
+- (instancetype)initWithFrame:(CGRect)frame titles:(NSArray<NSString*>*)titles defaultIndex:(NSInteger)defaultIndex needBottomLine:(BOOL)needBottomLine delegate:(id<JAPageTitleViewDelegate>)delegate {
     self = [super initWithFrame:frame];
     if (self) {
         
@@ -54,7 +51,7 @@ static CGFloat const kScrollLineH = 2;
         self.textNormalColor = [UIColor blackColor];
         self.textSelectColor = [self colorWithHexStr:@"#5587e6"];
         self.scrollLineColor = [self colorWithHexStr:@"#5587e6"];
-        _currentIndex = self.selectIndex ? self.selectIndex : 1;//默认选择第2个label
+        _currentIndex = defaultIndex > titles.count - 1 ? 0 : defaultIndex;
         
         [self initViews];
     }
@@ -68,9 +65,10 @@ static CGFloat const kScrollLineH = 2;
     _scrollView.scrollsToTop = NO;
     _scrollView.bounces = NO;
     _scrollView.scrollEnabled = NO;
+    _scrollView.pagingEnabled = YES;
     [self addSubview:_scrollView];
     
-    CGFloat labWidth = self.labelWidth ? self.labelWidth : self.frame.size.width / self.titles.count;
+    CGFloat labWidth = self.labelWidth == 0 ? self.frame.size.width / self.titles.count : self.labelWidth;
     for (NSInteger i=0; i<self.titles.count; i++) {
         UILabel *titleLab = [[UILabel alloc]initWithFrame:CGRectMake(i * labWidth, 0, labWidth, self.frame.size.height - kScrollLineH)];
         titleLab.font = self.titleFont;
@@ -104,6 +102,8 @@ static CGFloat const kScrollLineH = 2;
 
 #pragma mark - 视图点击事件
 - (void)labelClick:(UITapGestureRecognizer*)tap {
+    
+    _selectIndex = tap.view.tag;
     
     //1.拿到点击之后的当前label
     UILabel *currentLab = nil;
@@ -169,6 +169,7 @@ static CGFloat const kScrollLineH = 2;
 #pragma mark - Setter & Getter
 - (void)setLabelWidth:(CGFloat)labelWidth {
     _labelWidth = labelWidth;
+    
     if (_labelWidth * self.titles.count > self.frame.size.width) {//大于自身的宽度时，可以滑动
         _scrollView.scrollEnabled = YES;
         _scrollView.contentSize = CGSizeMake(_labelWidth * self.titles.count, 0);
@@ -193,7 +194,6 @@ static CGFloat const kScrollLineH = 2;
 
 - (void)setSelectIndex:(NSInteger)selectIndex {
     _selectIndex = selectIndex;
-    
     [self labelClick:nil];
 }
 

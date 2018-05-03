@@ -21,6 +21,9 @@ static NSString *const kCollectionViewCellID = @"kCollectionViewCellID";
 //父控制器
 @property (nonatomic,strong) UIViewController *parentVC;
 
+//默认滑动到哪个视图的index
+@property (nonatomic,assign) NSInteger defaultIndex;
+
 //是否禁用代理方法
 @property (nonatomic,assign) BOOL isForbitScrollDelegate;
 
@@ -32,16 +35,18 @@ static NSString *const kCollectionViewCellID = @"kCollectionViewCellID";
 @implementation JAPageContentView
 
 #pragma mark - 初始化方法 & UI
-- (instancetype)initWithFrame:(CGRect)frame childVCs:(NSArray<UIViewController*>*)childVCs parentVC:(UIViewController*)parentVC delegate:(id)delegate {
+- (instancetype)initWithFrame:(CGRect)frame childVCs:(NSArray<UIViewController*>*)childVCs parentVC:(UIViewController*)parentVC defaultIndex:(NSInteger)defaultIndex delegate:(id)delegate {
     self = [super initWithFrame:frame];
     if (self) {
         
         self.childVCs = childVCs;
         self.parentVC = parentVC;
+        self.defaultIndex = defaultIndex > childVCs.count - 1 ? 0 : defaultIndex;
         
         self.delegate = delegate;
         
         _isForbitScrollDelegate = NO;
+        _scrollCovered = NO;
         
         [self initViews];
         
@@ -71,7 +76,7 @@ static NSString *const kCollectionViewCellID = @"kCollectionViewCellID";
     [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kCollectionViewCellID];
     [self addSubview:_collectionView];
     
-    [_collectionView setContentOffset:CGPointMake(_collectionView.frame.size.width, 0)];
+    [_collectionView setContentOffset:CGPointMake(self.defaultIndex * _collectionView.frame.size.width, 0)];
     _startOffsetX = _collectionView.contentOffset.x;
 }
 
@@ -101,6 +106,8 @@ static NSString *const kCollectionViewCellID = @"kCollectionViewCellID";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
+    _scrollCovered = NO;
+    
     //判断是否是点击事件
     if (_isForbitScrollDelegate)  return;
     
@@ -112,10 +119,12 @@ static NSString *const kCollectionViewCellID = @"kCollectionViewCellID";
     CGFloat scrollViewW = scrollView.frame.size.width;
     
     if (currentOffset > _startOffsetX) {//左滑
-        
         //左滑：currentOffset增加 所以currentOffset / scrollViewW 是大于0的小数
         //floor()函数 : 取整
         progress = currentOffset / scrollViewW - floor(currentOffset / scrollViewW);// x.y - x = 0.y
+        if (progress >= 0.9) {
+            _scrollCovered = YES;
+        }
         
         sourcesIndex = currentOffset / scrollViewW;
         
@@ -134,6 +143,9 @@ static NSString *const kCollectionViewCellID = @"kCollectionViewCellID";
     }else {//右滑
         //右滑：currentOffset减少 所以currentOffset / scrollViewW 是大于0小于1的小数
         progress = 1 - (currentOffset / scrollViewW - floor(currentOffset / scrollViewW));
+        if (progress >= 0.9) {
+            _scrollCovered = YES;
+        }
         
         targetIndex = currentOffset / scrollViewW;
         
