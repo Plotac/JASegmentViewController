@@ -7,6 +7,7 @@
 //
 
 #import "JAPageContentView.h"
+#import "DownloadViewController.h"
 
 static NSString *const kCollectionViewCellID = @"kCollectionViewCellID";
 
@@ -92,8 +93,12 @@ static NSString *const kCollectionViewCellID = @"kCollectionViewCellID";
     }
     
     UIViewController *childVC = [self.childVCs objectAtIndex:indexPath.item];
-    childVC.view.backgroundColor = [UIColor colorWithRed:arc4random()%255/256.0 green:arc4random()%255/256.0 blue:arc4random()%255/256.0 alpha:1.0f];
+    childVC.view.backgroundColor = [UIColor whiteColor];
     childVC.view.frame = cell.bounds;
+    if ([childVC isMemberOfClass:[DownloadViewController class]]) {
+        DownloadViewController *vc = (DownloadViewController*)childVC;
+        vc.label.text = [NSString stringWithFormat:@"DownloadViewController, index: %ld",(long)indexPath.row];
+    }
     [cell.contentView addSubview:childVC.view];
     
     return cell;

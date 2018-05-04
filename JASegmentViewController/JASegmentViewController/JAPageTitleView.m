@@ -25,6 +25,9 @@ static CGFloat const kScrollLineH = 2;
 //滚动的选中条
 @property (nonatomic,strong) UIView *scrollLine;
 
+//底部横线
+@property (nonatomic,strong) UIView *lineView;
+
 //是否需要底部横线
 @property (nonatomic,assign) BOOL needBottomLine;
 
@@ -94,9 +97,9 @@ static CGFloat const kScrollLineH = 2;
     
     //底部分割线
     if (self.needBottomLine) {
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, self.frame.size.height - 1, [[UIScreen mainScreen]bounds].size.width, 1)];
-        lineView.backgroundColor = [self colorWithHexStr:@"#e5e5e5e"];
-        [_scrollView addSubview:lineView];
+        _lineView = [[UIView alloc]initWithFrame:CGRectMake(0, self.frame.size.height - 1, self.frame.size.width, 1)];
+        _lineView.backgroundColor = [self colorWithHexStr:@"#e5e5e5e"];
+        [_scrollView addSubview:_lineView];
     }
 }
 
@@ -174,6 +177,7 @@ static CGFloat const kScrollLineH = 2;
         _scrollView.scrollEnabled = YES;
         _scrollView.contentSize = CGSizeMake(_labelWidth * self.titles.count, 0);
         _scrollLine.frame = CGRectMake(_currentIndex * self.frame.size.width / self.titles.count, self.frame.size.height - kScrollLineH - 1, _labelWidth, kScrollLineH);
+        _lineView.frame = CGRectMake(0, self.frame.size.height - 1, _labelWidth * self.titles.count, 1);
         for (NSInteger i=0; i<self.titles.count; i++) {
             UILabel *label = [self.titleLabs objectAtIndex:i];
             label.frame = CGRectMake(i * _labelWidth, 0, _labelWidth, self.frame.size.height - kScrollLineH);

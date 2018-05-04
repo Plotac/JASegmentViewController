@@ -16,6 +16,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    UILabel *label = [UILabel new];
+    label.frame = CGRectMake(100, 100, 200, 100);
+    label.text = @"DetailViewController";
+    [self.view addSubview:label];
 }
 
 - (void)didReceiveMemoryWarning {

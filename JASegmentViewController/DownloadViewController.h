@@ -10,4 +10,6 @@
 
 @interface DownloadViewController : UIViewController
 
+@property (nonatomic,strong) UILabel *label;
+
 @end

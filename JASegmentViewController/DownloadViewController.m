@@ -16,6 +16,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _label = [UILabel new];
+    _label.frame = CGRectMake(100, 100, 300, 100);
+    [self.view addSubview:_label];
 }
 
 - (void)didReceiveMemoryWarning {
