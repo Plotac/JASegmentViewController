@@ -177,7 +177,9 @@ static CGFloat const kScrollLineH = 2;
         _scrollView.scrollEnabled = YES;
         _scrollView.contentSize = CGSizeMake(_labelWidth * self.titles.count, 0);
         _scrollLine.frame = CGRectMake(_currentIndex * self.frame.size.width / self.titles.count, self.frame.size.height - kScrollLineH - 1, _labelWidth, kScrollLineH);
-        _lineView.frame = CGRectMake(0, self.frame.size.height - 1, _labelWidth * self.titles.count, 1);
+        if (self.needBottomLine) {
+            _lineView.frame = CGRectMake(0, self.frame.size.height - 1, _labelWidth * self.titles.count, 1);
+        }
         for (NSInteger i=0; i<self.titles.count; i++) {
             UILabel *label = [self.titleLabs objectAtIndex:i];
             label.frame = CGRectMake(i * _labelWidth, 0, _labelWidth, self.frame.size.height - kScrollLineH);
