@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[JASegmentViewController pageContentView:progress:sourceIndex:targetIndex:]:JASegmentViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "contentView.isLeftScroll">
+            </PersistentString>
+            <PersistentString
+               value = "contentView.scrollCovered">
+            </PersistentString>
+            <PersistentString
+               value = "_titleView.titleArray.count - titleViewVisibleLabelCount">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[JAPageTitleView labelClick:]:JAPageTitleView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_selectIndex">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
