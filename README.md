@@ -5,7 +5,4 @@
 ![1](https://github.com/Plotac/JASegmentViewController/blob/master/JASegmentViewController.gif)
 
 
-![2](https://github.com/Plotac/JASegmentViewController/blob/master/JASegmentViewController2.gif)
-
-
 
